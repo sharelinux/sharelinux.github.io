@@ -17,16 +17,9 @@
 
     
     <entry>
-      <title><![CDATA[My New Post]]></title>
-      <url>%2F2017%2F03%2F22%2FMy-New-Post%2F</url>
+      <title><![CDATA[Mac上安装Node和NPM]]></title>
+      <url>%2F2017%2F03%2F22%2FMac%E4%B8%8A%E5%AE%89%E8%A3%85Node%E5%92%8CNPM%2F</url>
       <content type="text"><![CDATA[Mac上安装Node和NPMbrew安装node 首先更新brew，使其在最新版本，代码如下：$ brew update 确保brew是安全可靠的，代码如下：$ brew doctor 将brew的位置添加到$PATH环境变量中，并保存bash或者profile文件；$ export PATH=”/usr/local/bin:$PATH” 当处理完上述问题后，来处理brew和node关系清理brew的link$ brew cleanup 删除node文件，完全卸载node和npmsudo rm -rf/usr/local/{lib/node{,/.npm,_modules},bin,share/man}/{npm,node,man1/node*} 或者是sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node*/usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp /opt/local/bin/nodeopt/local/include/node /opt/local/lib/node_modules 或者是下面这样：(1).在/usr/local/lib目录下，删除任何与node和 node_modules有关的目录；(2).在/usr/local/include 目录下，删除任何与node 和 node_modules有关的目录；(3).如果你是通过brew install node安装的node，则在终端执行brew uninstallnode ，并在home目录下查找 local 或lib 或include文件夹，删除任何与node 和 node_modules有关的目录；(4).在/usr/local/bin目录下，删除任何与 node 执行文件；(5).最后下载 nvm，跟随它的介绍安装node。当然，你也可以通过npm来安装最新版本的Node。 通过brew安装node和npmbrew install node npm 测试Node和npm安装是否成功，安装Gruntnpm install -g grunt-cli如果安装成功，那么恭喜你node，npm，grunt均安装成功。若出现问题，请回顾前面内容。 参考1：http://www.jianshu.com/p/20ea93641bda参考2：http://www.jianshu.com/p/3baed1d862ce]]></content>
-    </entry>
-
-    
-    <entry>
-      <title><![CDATA[Hello World]]></title>
-      <url>%2F2017%2F03%2F21%2Fhello-world%2F</url>
-      <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
     </entry>
 
     
