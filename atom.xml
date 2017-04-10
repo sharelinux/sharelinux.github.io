@@ -1,4 +1,28 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>keepalived【生产实例配置】 | ShareLinux</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.2/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.2/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">keepalived【生产实例配置】</h1><a id="logo" href="/.">ShareLinux</a><p class="description">专注于记录，分享学习工作中的知识和见解</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">keepalived【生产实例配置】</h1><div class="post-meta">Apr 11, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><h4 id="1-安装keepalived软件包"><a href="#1-安装keepalived软件包" class="headerlink" title="1. 安装keepalived软件包"></a>1. 安装keepalived软件包</h4><p>yum install -y keepalived psmisc</p>
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ShareLinux</title>
+  <subtitle>专注于记录，分享学习工作中的知识和见解</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.sharelinux.com/"/>
+  <updated>2017-04-10T09:25:53.000Z</updated>
+  <id>http://www.sharelinux.com/</id>
+  
+  <author>
+    <name>心静梵音</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>keepalived【生产实例配置】</title>
+    <link href="http://www.sharelinux.com/2017/04/11/keepalived%E3%80%90%E7%94%9F%E4%BA%A7%E5%AE%9E%E4%BE%8B%E9%85%8D%E7%BD%AE%E3%80%91/"/>
+    <id>http://www.sharelinux.com/2017/04/11/keepalived【生产实例配置】/</id>
+    <published>2017-04-10T17:02:20.000Z</published>
+    <updated>2017-04-10T09:25:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="1-安装keepalived软件包"><a href="#1-安装keepalived软件包" class="headerlink" title="1. 安装keepalived软件包"></a>1. 安装keepalived软件包</h4><p>yum install -y keepalived psmisc</p>
 <h4 id="2-keepalived-master节点配置"><a href="#2-keepalived-master节点配置" class="headerlink" title="2.keepalived master节点配置"></a>2.keepalived master节点配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">[root@kubernets-master ~]# cp /etc/keepalived/keepalived.conf&#123;,.bak&#125;</div><div class="line">[root@kubernets-master ~]# vim /etc/keepalived/keepalived.conf</div><div class="line">! Configuration File for keepalived</div><div class="line"></div><div class="line">global_defs &#123;</div><div class="line">   notification_email &#123;</div><div class="line"></div><div class="line">       root@localhost</div><div class="line">   &#125;</div><div class="line">   notification_email_from root@localhost</div><div class="line">   smtp_server 127.0.0.1</div><div class="line">   smtp_connect_timeout 3</div><div class="line">   router_id LVS_HAPROXY</div><div class="line">&#125;</div><div class="line"></div><div class="line">vrrp_script chk_managerdown &#123;</div><div class="line">    script &quot;[[ -f /etc/keepalived/down ]] &amp;&amp; exit 1 || exit 0&quot;</div><div class="line">    interval 1</div><div class="line">    weigth -10</div><div class="line">    fall 2</div><div class="line">    rise 1</div><div class="line">&#125;</div><div class="line"></div><div class="line">vrrp_script chk_haproxy &#123;</div><div class="line">    script &quot;killall -0 haproxy&quot;</div><div class="line">    interval 1</div><div class="line">    weight -5</div><div class="line">    fall 2</div><div class="line">    rise 1</div><div class="line">&#125;</div><div class="line"></div><div class="line">vrrp_instance VI_1 &#123;</div><div class="line">    state MASTER</div><div class="line">    interface eno16777728</div><div class="line">    virtual_router_id 21</div><div class="line">    priority 100</div><div class="line">    advert_int 1</div><div class="line">    garp_master_delay 1</div><div class="line"></div><div class="line">    authentication &#123;</div><div class="line">        auth_type PASS</div><div class="line">        auth_pass TTYCPass</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    virtual_ipaddress &#123;</div><div class="line">        172.16.111.111</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    track_script &#123;</div><div class="line">        chk_managerdown</div><div class="line">        chk_haproxy</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    notify_master &quot;/etc/keepalived/notify.sh master&quot;</div><div class="line">    notify_backup &quot;/etc/keepalived/notify.sh backup&quot;</div><div class="line">    notify_fault &quot;/etc/keepalived/notify.sh fault&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="3-配置notify通知切换脚本"><a href="#3-配置notify通知切换脚本" class="headerlink" title="3.配置notify通知切换脚本"></a>3.配置notify通知切换脚本</h4><p>[root@kubernets-master ~]#  vim /etc/keepalived/notify.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">#/bin/bash</div><div class="line">vip=172.16.111.111</div><div class="line">contact=&apos;root@localhost&apos;</div><div class="line"></div><div class="line">notify()&#123;</div><div class="line">    mailsubject=&quot;`hostname` to be $1: $vip floating&quot;</div><div class="line">    mainbody=&quot;`date &apos;+%F %H:%M:%S&apos;`:vrrp transition,`hostname` changed to be $1&quot;</div><div class="line">    echo $mailbody | mail -s &quot;$mailsubject&quot; $contact</div><div class="line">&#125;</div><div class="line"></div><div class="line">case &quot;$1&quot; in</div><div class="line">    master)</div><div class="line">        notify master</div><div class="line">        #/etc/rc.d/init.d/haproxy start</div><div class="line">        /usr/bin/systemctl start haproxy</div><div class="line">        exit 0</div><div class="line">    ;;</div><div class="line">    backup)</div><div class="line">        notify backup</div><div class="line">        #/etc/rc.d/init.d/haproxy stop</div><div class="line">        /usr/bin/systemctl stop haproxy</div><div class="line">        exit 0</div><div class="line">    ;;</div><div class="line">    fault)</div><div class="line">        notify fault</div><div class="line">        /usr/bin/systemctl stop haproxy</div><div class="line">        exit 0</div><div class="line">    ;;</div><div class="line">    *)</div><div class="line">        echo &apos;Usage: `basename $0` &#123;master|backup|fault&#125;&apos;</div><div class="line">        exit 1</div><div class="line">    ;;</div><div class="line">esac</div></pre></td></tr></table></figure></p>
 <h4 id="4-拷贝master节点配置文件、脚本到backup节点"><a href="#4-拷贝master节点配置文件、脚本到backup节点" class="headerlink" title="4.拷贝master节点配置文件、脚本到backup节点"></a>4.拷贝master节点配置文件、脚本到backup节点</h4><p>scp /etc/keepalived/{keepalived.conf,notify.sh} root@172.16.111.100:/etc/keepalived/</p>
@@ -20,4 +44,108 @@
 <li>参考3：<a href="http://seanlook.com/2015/05/18/nginx-keepalived-ha/" target="_blank" rel="external">http://seanlook.com/2015/05/18/nginx-keepalived-ha/</a></li>
 <li>参考4：<a href="http://1983939925.blog.51cto.com/8400375/1557223" target="_blank" rel="external">http://1983939925.blog.51cto.com/8400375/1557223</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.1" async></script><a data-url="http://www.sharelinux.com/2017/04/11/keepalived【生产实例配置】/" data-id="cj1bya7u00002kw2yesz1uavr" class="article-share-link">分享到</a><div class="tags"><a href="/tags/Keepalived/">Keepalived</a></div><div class="post-nav"><a href="/2017/03/22/Golang之profiler和trace工具/" class="next">Golang之profiler和trace工具</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://www.sharelinux.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Keepalived/" style="font-size: 15px;">Keepalived</a> <a href="/tags/golang/" style="font-size: 15px;">golang</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/keepalived【生产实例配置】/">keepalived【生产实例配置】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/Golang之profiler和trace工具/">Golang之profiler和trace工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/Mac上安装Node和NPM/">Mac上安装Node和NPM</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.baidu.com/" title="baidu" target="_blank">baidu</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">ShareLinux.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a> Theme<a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> maupassant <br></a><a rel="nofollow" target="_blank" href="http://www.beianbeian.com/s?keytype=1&amp;q=%E4%BA%ACICP%E5%A4%8715035099%E5%8F%B7"> 京ICP备15035099号</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;1-安装keepalived软件包&quot;&gt;&lt;a href=&quot;#1-安装keepalived软件包&quot; class=&quot;headerlink&quot; title=&quot;1. 安装keepalived软件包&quot;&gt;&lt;/a&gt;1. 安装keepalived软件包&lt;/h4&gt;&lt;p&gt;yum inst
+    
+    </summary>
+    
+    
+      <category term="Keepalived" scheme="http://www.sharelinux.com/tags/Keepalived/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Golang之profiler和trace工具</title>
+    <link href="http://www.sharelinux.com/2017/03/22/Golang%E4%B9%8Bprofiler%E5%92%8Ctrace%E5%B7%A5%E5%85%B7/"/>
+    <id>http://www.sharelinux.com/2017/03/22/Golang之profiler和trace工具/</id>
+    <published>2017-03-21T18:30:01.000Z</published>
+    <updated>2017-03-21T10:37:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="Golang-之profiler和trace工具"><a href="#Golang-之profiler和trace工具" class="headerlink" title="Golang 之profiler和trace工具"></a>Golang 之profiler和trace工具</h4><p>在生成环境中使用Golang需要很多优化，才能满足性能需求，通常优化点在于CPU占用。Golang提供了丰富的工具，包括内置的profiler和trace工具，来帮助我们完成任务。</p>
+<p>一、 Profiler</p>
+<p>Golang自带了profiler工具，即为C++中的gperftools包。而且提供api和http两种接口。实际项目中http接口更为方便，下面以http接口为例说明：</p>
+<ol>
+<li>在golang程序中，开启profiler接口<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">go func() &#123;</div><div class="line">    log.Println(http.ListenAndServe(&quot;:5567&quot;, nil))</div><div class="line">&#125;()</div><div class="line">    //other program code</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>嵌入以上代码，即可在编译生成的二进制程序中打开profiler的http接口。</p>
+<ol>
+<li>可以通过浏览器查看profiler数据<br><a href="http://127.0.0.1:5567/debug/pprof/" target="_blank" rel="external">http://127.0.0.1:5567/debug/pprof/</a></li>
+</ol>
+<p><img src="http://images.sharelinux.com/14899821096686.jpg" alt=""></p>
+<ol>
+<li>同时也可以通过命令行来查看cpu占用<br><code>go tool pprof http://127.0.0.1:5567/debug/pprof/profile</code></li>
+</ol>
+<p><img src="http://images.sharelinux.com/14899821359492.jpg" alt=""><br>命令行还可以图形化显示cpu占用拓扑图。鉴于开发机没有安装X环境，暂不详述<br>通过找出cpu占用top10的函数，来不断优化性能。</p>
+<p>二、FlameGraph</p>
+<p>uber开源了一个工具，可以十分方便地查询profiler数据生成火焰图，如此优化性能更为直观。<br>首先需要安装工具：<br>go get github.com/uber/go-torch<br>go get github.com/tools/godep<br>godep restore<br>git clone <a href="https://github.com/brendangregg/FlameGraph.git" target="_blank" rel="external">https://github.com/brendangregg/FlameGraph.git</a></p>
+<p>上述操作需要设置正确的PATH来执行godep,go-torch,flamegraph.pl<br>执行：<br>go-torch –time=15 –file “torch.svg” –url <a href="http://127.0.0.1:5567" target="_blank" rel="external">http://127.0.0.1:5567</a><br>上述命令会收集<br><a href="http://127.0.0.1:5567/debug/pprof/profile" target="_blank" rel="external">http://127.0.0.1:5567/debug/pprof/profile</a> 的数据，并调用flamegraph绘制torch.svg火焰图。<br>如下：<br><img src="http://images.sharelinux.com/14899822422214.jpg" alt=""></p>
+<p>三、Trace</p>
+<ol>
+<li><p>首先需要收集二进制的trace数据。<br>curl 127.0.0.1:5567/debug/pprof/trace?seconds=10 trace.data<br>上述命令收集10秒的trace保存在本地的trace.data文件中，该文件是二进制的。</p>
+</li>
+<li><p>其次需要将二进制的trace数据转换为json格式。执行<br>go tool trace -http=’:8888’ golang_server trace.data</p>
+</li>
+</ol>
+<p>其中golang_server是127.0.0.1:5567对应的二进制golang程序，trace.data是上述抓取的二进制数据。新开终端，执行<br>curl 127.0.0.1:8888/jsontrace trace.json<br>将前一步的trace.data转换层trace.json格式。</p>
+<ol>
+<li>再次将trace.json转换为html格式。<br>到<a href="https://github.com/catapult-project/catapult/tree/master/tracing下载trace-viewer工具，执行" target="_blank" rel="external">https://github.com/catapult-project/catapult/tree/master/tracing下载trace-viewer工具，执行</a><br>./trace2html ~/trace/trace.json<br>生成trace.html文件，使用浏览器打开，如下。<br><img src="http://images.sharelinux.com/14899823233907.jpg" alt=""><br><img src="http://images.sharelinux.com/14899823277193.jpg" alt=""><br><img src="http://images.sharelinux.com/14899823360230.jpg" alt=""></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;Golang-之profiler和trace工具&quot;&gt;&lt;a href=&quot;#Golang-之profiler和trace工具&quot; class=&quot;headerlink&quot; title=&quot;Golang 之profiler和trace工具&quot;&gt;&lt;/a&gt;Golang 之profil
+    
+    </summary>
+    
+    
+      <category term="golang" scheme="http://www.sharelinux.com/tags/golang/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac上安装Node和NPM</title>
+    <link href="http://www.sharelinux.com/2017/03/22/Mac%E4%B8%8A%E5%AE%89%E8%A3%85Node%E5%92%8CNPM/"/>
+    <id>http://www.sharelinux.com/2017/03/22/Mac上安装Node和NPM/</id>
+    <published>2017-03-21T16:25:04.000Z</published>
+    <updated>2017-04-10T09:21:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="Mac上安装Node和NPM"><a href="#Mac上安装Node和NPM" class="headerlink" title="Mac上安装Node和NPM"></a>Mac上安装Node和NPM</h4><p>brew安装node</p>
+<ol>
+<li><p>首先更新brew，使其在最新版本，代码如下：<br>$ brew update</p>
+</li>
+<li><p>确保brew是安全可靠的，代码如下：<br>$ brew doctor</p>
+</li>
+<li><p>将brew的位置添加到$PATH环境变量中，并保存bash或者profile文件；<br>$ export PATH=”/usr/local/bin:$PATH”</p>
+</li>
+<li><p>当处理完上述问题后，来处理brew和node关系<br>清理brew的link<br>$ brew cleanup</p>
+</li>
+</ol>
+<p>删除node文件，完全卸载node和npm<br>sudo rm -rf<br>/usr/local/{lib/node{,/.npm,_modules},bin,share/man}/{npm<em>,node</em>,man1/node*}</p>
+<p>或者是<br>sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node*<br>/usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp /opt/local/bin/node<br>opt/local/include/node /opt/local/lib/node_modules</p>
+<p>或者是下面这样：<br>(1).在/usr/local/lib目录下，删除任何与node和 node_modules有关的目录；<br>(2).在/usr/local/include 目录下，删除任何与node 和 node_modules有关的目录；<br>(3).如果你是通过<strong>brew install node</strong>安装的node，则在终端执行<strong>brew uninstall<br>node</strong> ，并在home目录下查找 <strong>local</strong> 或<strong>lib</strong> 或<br><strong>include</strong>文件夹，删除任何与<strong>node</strong> 和 <strong>node_modules</strong>有关的目录；<br>(4).在<strong>/usr/local/bin</strong>目录下，删除任何与 <strong>node</strong> 执行文件；<br>(5).最后下载 <strong>nvm</strong><br>，跟随它的介绍安装node。当然，你也可以通过<strong>npm</strong>来安装最新版本的Node。</p>
+<ol>
+<li><p>通过brew安装node和npm<br>brew install node npm</p>
+</li>
+<li><p>测试Node和npm安装是否成功，安装Grunt<br>npm install -g grunt-cli<br>如果安装成功，那么恭喜你node，npm，grunt均安装成功。若出现问题，请回顾前面内容。</p>
+</li>
+</ol>
+<p>参考1：<a href="http://www.jianshu.com/p/20ea93641bda" target="_blank" rel="external">http://www.jianshu.com/p/20ea93641bda</a><br>参考2：<a href="http://www.jianshu.com/p/3baed1d862ce" target="_blank" rel="external">http://www.jianshu.com/p/3baed1d862ce</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;Mac上安装Node和NPM&quot;&gt;&lt;a href=&quot;#Mac上安装Node和NPM&quot; class=&quot;headerlink&quot; title=&quot;Mac上安装Node和NPM&quot;&gt;&lt;/a&gt;Mac上安装Node和NPM&lt;/h4&gt;&lt;p&gt;brew安装node&lt;/p&gt;
+&lt;ol&gt;
+&lt;l
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
